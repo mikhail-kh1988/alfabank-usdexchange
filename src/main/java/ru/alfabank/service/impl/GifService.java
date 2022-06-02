@@ -6,13 +6,10 @@ import org.springframework.stereotype.Service;
 import ru.alfabank.client.GiphyClient;
 import ru.alfabank.dto.GiphyDto;
 import ru.alfabank.dto.giphyEntry.Datum;
-import ru.alfabank.service.ICurrencyUtilsService;
-import ru.alfabank.service.IExchangeRateService;
+import ru.alfabank.service.IGifService;
 
 @Service
-public class ExchangeRateService implements IExchangeRateService {
-    @Autowired
-    private ICurrencyUtilsService currencyUtilService;
+public class GifService implements IGifService {
 
     @Autowired
     private GiphyClient giphyClient;
@@ -20,14 +17,10 @@ public class ExchangeRateService implements IExchangeRateService {
     @Value("${ru.alfabank.giphy}")
     private String giphyId;
 
-
     @Override
-    public String getRates(String codeCurrency) {
-        return getGiphy(currencyUtilService.defineCurrency(codeCurrency.toUpperCase()));
-    }
-
-    private String getGiphy(String emoji){
+    public String getGif(String emoji) {
         String path = "";
+
         GiphyDto giphyDto = giphyClient.getGif(giphyId, emoji);
 
         for (Datum d: giphyDto.getData()) {

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import ru.alfabank.service.IExchangeRateService;
+import ru.alfabank.service.IExchangeCurrencyService;
 
 
 @RestController
@@ -14,11 +14,11 @@ import ru.alfabank.service.IExchangeRateService;
 public class ExchangeController {
 
     @Autowired
-    private IExchangeRateService rateService;
+    private IExchangeCurrencyService currencyService;
 
     @GetMapping("/gif/{code}")
     public ModelAndView getGiphy(@PathVariable String code){
-        return new ModelAndView("redirect:"+rateService.getRates(code));
+        return new ModelAndView("redirect:"+currencyService.getUrlCurrency(code));
     }
 
 }
