@@ -1,10 +1,10 @@
 package ru.alfabank.service;
 
 import ru.alfabank.dto.ExchangeRatesDto;
-import java.util.List;
+import java.util.Map;
 
 public interface IExchangeService {
 
-    List<ExchangeRatesDto> getCurrentAndLatterDateCurrency();
+    Map<String, ExchangeRatesDto> getCurrentAndLatterDateCurrency();
 
 }

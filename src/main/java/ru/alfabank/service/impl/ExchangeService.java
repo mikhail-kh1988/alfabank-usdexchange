@@ -10,11 +10,13 @@ import ru.alfabank.service.IExchangeService;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ExchangeService implements IExchangeService {
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Autowired
     private ExchangeClient exchangeClient;
@@ -23,26 +25,21 @@ public class ExchangeService implements IExchangeService {
     private String exchangeApiId;
 
     @Override
-    public List<ExchangeRatesDto> getCurrentAndLatterDateCurrency() {
-        List<ExchangeRatesDto> list = new ArrayList<>();
+    public Map<String, ExchangeRatesDto> getCurrentAndLatterDateCurrency() {
+        Map<String, ExchangeRatesDto> list = new HashMap<>();
 
         ExchangeRatesDto toDayCurrency = exchangeClient.getRates(exchangeApiId);
         ExchangeRatesDto earlyCurrency = exchangeClient.getEarlyRate(exchangeApiId, getDateEarly());
 
-        list.add(toDayCurrency);
-        list.add(earlyCurrency);
+        list.put("toDay", toDayCurrency);
+        list.put("early", earlyCurrency);
 
         return list;
     }
 
     private String getDateEarly(){
-        StringBuilder date = new StringBuilder();
-        LocalDate currentDate = LocalDate.now();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate earlyDate = currentDate.minus(Period.ofDays(1));
-
-        date.append(earlyDate.format(formatter));
-        return date.toString();
+        return LocalDate.now()
+                .minus(Period.ofDays(1))
+                .format(formatter);
     }
 }
